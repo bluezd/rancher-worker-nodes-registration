@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: k8s-worker
   become: true
   become_user: sysop
   become_method: su

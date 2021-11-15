@@ -48,8 +48,8 @@ function pre_check() {
 }
 
 function get_registration_token() {
-  api_url='https://159.138.240.135'
-  api_token='token-dvwv6:rcwc64ctmjw8jvdcbk6t98swz9mdzcjsd2xhlg4r6kvm6g9bktln8z'
+  api_url='https://xx.xx.xx.xx'
+  api_token='token-xxxxxx'
   cluster_name='k8s-1'
   
   cluster_ID=$( curl -s -k -H "Authorization: Bearer ${api_token}" $api_url/v3/clusters | jq -r ".data[] | select(.name == \"$cluster_name\") | .id" )
@@ -62,17 +62,17 @@ function add_workers() {
   get_registration_token
 
   if [ "$registration_command" != "" ];then
-        pushd ansible > /dev/null 2>&1
-        registration_command="${registration_command} "--worker""
-        #registration_command="${registration_command} --etcd --controlplane --worker"
-  	ansible workers -b --become-method su --become-user sysop -a "${registration_command}" 
+	pushd ansible > /dev/null 2>&1
+	registration_command="${registration_command} "--worker""
+	#registration_command="${registration_command} --etcd --controlplane --worker"
+	ansible -i xlsx_inventory.py k8s-worker -b --become-method su --become-user sysop -a "${registration_command}"
   	popd > /dev/null 2>&1
   fi
 }
 
 function configure_workers() {
   pushd ansible > /dev/null 2>&1
-  ansible-playbook prepare-environment.yaml 
+  ansible-playbook -i xlsx_inventory.py prepare-environment.yaml
   popd > /dev/null 2>&1
 }
 
