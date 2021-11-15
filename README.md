@@ -36,7 +36,9 @@ ansible -i xlsx_inventory.py k8s-worker --become-method su --become-user sysop -
 
 #### Add workers
 
-```
-
-./provision.sh -a
-```
+  1. Fill in Rancher Server address, token and cluster name into `provision.sh`:  
+     ![image](https://user-images.githubusercontent.com/977107/141729683-864b1f10-709b-4d95-a2ed-d6e3e537f987.png)
+  3. Add workers to cluster:
+     ```
+     ./provision.sh -a
+     ```
