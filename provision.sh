@@ -32,6 +32,11 @@ function pre_check() {
     exit 1
   fi
 
+  if ! command -v python3 > /dev/null 2>&1;then
+    echo "${RED}pre check failed: ${MAGENTA}python3 not found${NORMAL}"
+    exit 1
+  fi
+
   pushd ansible > /dev/null 2>&1
   #ansible workers -m ping > /dev/null 2>&1 
   #test $? -eq 0 || echo "${RED}pre check failed: ${MAGENTA}could not connect to workers${NORMAL}";exit 1
@@ -74,16 +79,12 @@ function configure_workers() {
 function usage() {
   echo "##############################################################################################"
   echo -e "Usage:\n"
-  echo "This script aims to verify cluster status after upgrading:"
-  echo -e "\t${0} -c"
-  echo -e "\t${0} -m <master|private-slave|public-slave> machine-list"
-  echo -e "\t${0} -l machine -m <master|private-slave|public-slave> machine-list"
+  echo "This script aims to provision rancher worker nodes automatically."
+  echo -e "\t${0} -k pre check"
+  echo -e "\t${0} -c configure worker nodes(eg: Add system utlization options, install docker, etc.)"
+  echo -e "\t${0} -a add workers into rancher cluster"
+  echo -e "\t${0} -h usage"
 
-  echo -e "\teg:"
-  echo -e "\t${0} -m master masters"
-  echo -e "\t${0} -l xx.xx.xx.xx -m master masters"
-  echo -e "\t${0} -m private-slave private"
-  echo -e "\t${0} -m public-slave public"
   echo "##############################################################################################"
 }
 
